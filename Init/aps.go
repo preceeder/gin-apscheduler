@@ -16,7 +16,7 @@ import (
 var Scheduler *apscheduler.Scheduler
 
 // Init 这里需要更具自己的需求修改
-func Init() {
+func initAps() {
 	Scheduler = apscheduler.NewScheduler()
 	events.RegisterEvent(events.EVENT_JOB_ERROR|events.EVENT_JOB_ADDED|events.EVENT_JOB_REMOVED|events.EVENT_JOB_MODIFIED, func(ei events.EventInfo) {
 		fmt.Println("lisenter:--->", ei)
