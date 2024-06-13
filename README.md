@@ -4,8 +4,9 @@
 ```shell
 // swag
 http://0.0.0.0:8080/swagger/index.html
-![img.png](https://github.com/preceeder/gin-apscheduler/blob/main/static/img.png)
 ```
+![img.png](static/img.png)
+
 
 ```shell
 # swagger 有引用外部类型的时候需要加参数   --parseDependency --parseInternal
