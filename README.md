@@ -4,7 +4,7 @@
 ```shell
 // swag
 http://0.0.0.0:8080/swagger/index.html
-![img.png](static/img.png)
+![img.png](https://github.com/preceeder/gin-apscheduler/blob/main/static/img.png)
 ```
 
 ```shell
