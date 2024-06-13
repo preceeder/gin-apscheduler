@@ -167,7 +167,7 @@ const docTemplate = `{
         },
         "/scheduler/job/pause": {
             "put": {
-                "description": "暂定任务",
+                "description": "暂停任务",
                 "consumes": [
                     "application/json"
                 ],
@@ -177,7 +177,7 @@ const docTemplate = `{
                 "tags": [
                     "Job"
                 ],
-                "summary": "暂定任务",
+                "summary": "暂停任务",
                 "parameters": [
                     {
                         "type": "string",
@@ -199,7 +199,7 @@ const docTemplate = `{
         },
         "/scheduler/job/resume": {
             "put": {
-                "description": "暂定任务",
+                "description": "恢复任务",
                 "consumes": [
                     "application/json"
                 ],
@@ -209,7 +209,7 @@ const docTemplate = `{
                 "tags": [
                     "Job"
                 ],
-                "summary": "暂定任务",
+                "summary": "恢复任务",
                 "parameters": [
                     {
                         "type": "string",

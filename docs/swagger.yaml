@@ -239,7 +239,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: 暂定任务
+      description: 暂停任务
       parameters:
       - description: ' job_id'
         in: query
@@ -253,14 +253,14 @@ paths:
           description: 响应值
           schema:
             $ref: '#/definitions/view.HttpResponse'
-      summary: 暂定任务
+      summary: 暂停任务
       tags:
       - Job
   /scheduler/job/resume:
     put:
       consumes:
       - application/json
-      description: 暂定任务
+      description: 恢复任务
       parameters:
       - description: ' job_id'
         in: query
@@ -274,7 +274,7 @@ paths:
           description: 响应值
           schema:
             $ref: '#/definitions/view.HttpResponse'
-      summary: 暂定任务
+      summary: 恢复任务
       tags:
       - Job
   /scheduler/jobs:

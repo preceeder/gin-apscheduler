@@ -161,9 +161,9 @@ func ApiGetJobsByStoreName(c *gin.Context) {
 }
 
 // ApiPauseJob @BasePath
-// @Summary 暂定任务
+// @Summary 暂停任务
 // @Schemes http
-// @Description 暂定任务
+// @Description 暂停任务
 // @Tags Job
 // @Accept json
 // @Produce json
