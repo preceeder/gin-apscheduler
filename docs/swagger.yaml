@@ -1,0 +1,323 @@
+definitions:
+  job.Job:
+    properties:
+      args:
+        additionalProperties: {}
+        description: Arguments for `Func`.
+        type: object
+      func_name:
+        description: 注册函数名
+        type: string
+      id:
+        description: 任务的唯一id.
+        type: string
+      max_instance:
+        description: 改任务可以同时存在的个数 最少1个, 默认 1
+        type: integer
+      name:
+        description: job name
+        type: string
+      next_run_time:
+        description: Automatic update, not manual setting.  ms
+        type: integer
+      replace:
+        description: 任务存在是否更新 默认false
+        type: boolean
+      status:
+        description: |-
+          Optional: `STATUS_RUNNING` | `STATUS_PAUSED`
+          It should not be set manually.
+        type: string
+      store_name:
+        description: jobStoreName
+        type: string
+      timeout:
+        description: |-
+          The running timeout of `Func`.
+          ms Default: 3600*1000
+        type: integer
+      trigger: {}
+    type: object
+  triggers.CronTrigger:
+    properties:
+      Jitter:
+        description: 时间误差, 超过这个误差时间就忽略本次执行, 默认 0 表示不管误差, 单位 ms time.Millisecond,
+        type: integer
+      cron_expr:
+        type: string
+      end_time:
+        description: 数据格式 time.DateTime "2006-01-02 15:04:05"
+        type: string
+      start_time:
+        description: 数据格式 time.DateTime "2006-01-02 15:04:05"
+        type: string
+      utc_time_zone:
+        description: 默认就是 UTC
+        type: string
+    type: object
+  triggers.DateTrigger:
+    properties:
+      Jitter:
+        description: 时间误差, 超过这个误差时间就忽略本次执行,默认 0 表示不管误差, 单位 ms time.Millisecond
+        type: integer
+      run_date:
+        description: 数据格式 time.DateTime "2006-01-02 15:04:05"
+        type: string
+      utc_time_zone:
+        description: 默认UTC
+        type: string
+    type: object
+  triggers.IntervalTrigger:
+    properties:
+      Jitter:
+        description: 时间误差, 超过这个误差时间就忽略本次执行, 默认 0 表示不管误差, 单位 ms time.Millisecond
+        type: integer
+      end_time:
+        description: 数据格式 time.DateTime  "2006-01-02 15:04:05"
+        type: string
+      interval:
+        description: 单位 ms
+        type: integer
+      start_time:
+        description: 数据格式 time.DateTime  "2006-01-02 15:04:05"
+        type: string
+      utc_time_zone:
+        description: 默认UTC
+        type: string
+    type: object
+  view.HttpResponse:
+    properties:
+      data: {}
+      errorCode:
+        type: integer
+      msg:
+        type: string
+    type: object
+  view.Job:
+    properties:
+      args:
+        additionalProperties: {}
+        description: Arguments for `Func`.
+        type: object
+      cron_trigger:
+        $ref: '#/definitions/triggers.CronTrigger'
+      date_trigger:
+        allOf:
+        - $ref: '#/definitions/triggers.DateTrigger'
+        description: 同时出现的时候优先使用 interval_trigger > date_trigger > cron_trigger
+      func_name:
+        description: 必须和注册的函数名一致
+        type: string
+      id:
+        description: 任务的唯一id.
+        type: string
+      interval_trigger:
+        allOf:
+        - $ref: '#/definitions/triggers.IntervalTrigger'
+        description: cron_trigger, date_trigger,interval_trigger 只能有一个生效
+      max_instance:
+        description: 改任务可以同时存在的个数 最少1个, 默认 1
+        type: integer
+      name:
+        description: job name
+        type: string
+      old_store_name:
+        description: 更新的时候需要
+        type: string
+      replace:
+        description: 任务存在是否更新 默认false
+        type: boolean
+      store_name:
+        description: jobStoreName
+        type: string
+      timeout:
+        description: '任务执行超时时间 ms Default: `3600*1000`'
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /scheduler/func/name:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有的 func name
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 获取所有的 func name
+      tags:
+      - Func
+  /scheduler/job:
+    delete:
+      consumes:
+      - application/json
+      description: 删除任务
+      parameters:
+      - description: job id
+        in: query
+        name: job_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 删除任务
+      tags:
+      - Job
+    get:
+      consumes:
+      - application/json
+      description: 根据job_id 获取job
+      parameters:
+      - description: ' job id'
+        in: query
+        name: job_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 根据job_id 获取job
+      tags:
+      - Job
+    post:
+      consumes:
+      - application/json
+      description: 添加任务
+      parameters:
+      - description: body
+        in: body
+        name: Data
+        required: true
+        schema:
+          $ref: '#/definitions/view.Job'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 添加任务
+      tags:
+      - Job
+    put:
+      consumes:
+      - application/json
+      description: 修改任务
+      parameters:
+      - description: body
+        in: body
+        name: Data
+        required: true
+        schema:
+          $ref: '#/definitions/view.Job'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 修改任务
+      tags:
+      - Job
+  /scheduler/job/pause:
+    put:
+      consumes:
+      - application/json
+      description: 暂定任务
+      parameters:
+      - description: ' job_id'
+        in: query
+        name: job_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 暂定任务
+      tags:
+      - Job
+  /scheduler/job/resume:
+    put:
+      consumes:
+      - application/json
+      description: 暂定任务
+      parameters:
+      - description: ' job_id'
+        in: query
+        name: job_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 暂定任务
+      tags:
+      - Job
+  /scheduler/jobs:
+    get:
+      consumes:
+      - application/json
+      description: 根据store_name获取jobs
+      parameters:
+      - description: ' store_name'
+        in: query
+        name: store_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            allOf:
+            - $ref: '#/definitions/view.HttpResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/job.Job'
+                  type: array
+              type: object
+      summary: 根据tore_name获取jobs
+      tags:
+      - Jobs
+  /scheduler/store/name:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有的 store name
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 响应值
+          schema:
+            $ref: '#/definitions/view.HttpResponse'
+      summary: 获取所有的 store name
+      tags:
+      - Store
+swagger: "2.0"
