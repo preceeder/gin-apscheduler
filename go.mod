@@ -4,13 +4,11 @@ go 1.22.1
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/preceeder/apscheduler v1.0.0
+	github.com/preceeder/apscheduler v1.0.2
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.3
 )
-
-replace github.com/preceeder/apscheduler v1.0.0 => /Users/wanghu/Desktop/GO/src/apscheduler
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
